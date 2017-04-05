@@ -129,8 +129,9 @@ int main ( int argc,char **argv ) {
 
     cv::Mat image;
     int nCount=getParamVal ( "-nframes",argc,argv, 100 );
+    cv::namedWindow( "cvwindow", cv::WINDOW_AUTOSIZE );
     cout<<"Capturing"<<endl;
-
+    
     double time_=cv::getTickCount();
 
     for ( int i=0; i<nCount || nCount==0; i++ ) {
@@ -138,8 +139,11 @@ int main ( int argc,char **argv ) {
         Camera.retrieve ( image );
         if ( !doTestSpeedOnly ) {
             if ( i%5==0 ) 	  cout<<"\r capturing ..."<<i<<"/"<<nCount<<std::flush;
-            if ( i%30==0 && i!=0 )
-                cv::imwrite ("image"+std::to_string(i)+".jpg",image );
+            if ( i%10==0 && i!=0 ) {
+//                cv::imwrite ("image"+std::to_string(i)+".jpg",image );
+                cv::imshow ("cvwindow", image);
+                cv::waitKey(1);
+            }
         }
     }
     if ( !doTestSpeedOnly )  cout<<endl<<"Images saved in imagexx.jpg"<<endl;

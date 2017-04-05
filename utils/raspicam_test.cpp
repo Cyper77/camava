@@ -190,9 +190,11 @@ struct CallBackData_t{
 };
 
 void vidInCallback(void* data){
+
     // new image captured
-    if (0 == data) return;
+    if (0 == data) return;    
     struct CallBackData_t* camData = (struct CallBackData_t*)data;
+    cout << "cb-strt:" << camData->i << endl;
 
     if (!camData->isCapturing) return;
     camData->Camera->retrieve ( camData->data );
@@ -212,7 +214,10 @@ void vidInCallback(void* data){
         camData->Camera->setUserCallback(0);
         camData->isCapturing = false;
     }
-
+    
+    cout<<"waiting"<<endl;
+    usleep(100000);
+    cout<<"cb-done:"<< camData->i << endl;
 }
 
 int main ( int argc,char **argv ) {
