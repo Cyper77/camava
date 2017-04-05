@@ -169,9 +169,6 @@ namespace raspicam {
                 else res=false;//error int format
                 return res;
             } break;
-            case CV_CAP_PROP_MODE ://nothing to  do yet
-                return false;
-                break;
             case CV_CAP_PROP_BRIGHTNESS :
                 _impl->setBrightness ( value );
                 break;
