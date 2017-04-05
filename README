@@ -10,6 +10,14 @@ This library allows to use the Raspberry Pi Camera.
  - Many examples 
 
 * ChangeLog
+
+0.1.5
+- corrected the behaviour of CV_CAP_PROP_WHITE_BALANCE_RED_V and CV_CAP_PROP_WHITE_BALANCE_BLUE_U in raspicam_cv
+0.1.4
+- Updates to latest version of the controllers. Bug corrected with BGR RGB swapping
+- Added set/getFrameRates in raspicam and raspicam_cv
+- Added rotation capabilities in raspicam_cv via  set(CV_CAP_PROP_ROLL,val)
+
 0.1.3
   - Native support for BGR and RGB in opencv classes. No need to do conversion anymore.
 0.1.2

@@ -138,7 +138,7 @@ namespace raspicam {
     void RaspiCam::setVerticalFlip ( bool vFlip ) {
         _impl->setVerticalFlip ( vFlip );
     }
-    void RaspiCam::setFrameRate ( int frames_per_second ) {
+    void RaspiCam::setFrameRate ( unsigned int frames_per_second ) {
         _impl->setFrameRate ( frames_per_second );
     }
 
@@ -150,6 +150,7 @@ namespace raspicam {
     unsigned int RaspiCam::getRotation() const{return _impl->getRotation()  ;}
     int RaspiCam::getISO() const{return _impl->getISO() ;}
     unsigned int RaspiCam::getShutterSpeed() const{return _impl->getShutterSpeed();}
+    unsigned int RaspiCam::getFrameRate() const{return _impl->getFrameRate();}
 
     int RaspiCam::getSharpness() const{return _impl->getSharpness() ;}
     int RaspiCam::getContrast() const{return _impl->getContrast() ;}
@@ -161,7 +162,6 @@ namespace raspicam {
 
     RASPICAM_IMAGE_EFFECT RaspiCam::getImageEffect() const{return _impl->getImageEffect() ;};
     RASPICAM_METERING RaspiCam::getMetering() const{return _impl->getMetering() ;}
-    int RaspiCam::getFrameRate() const{return _impl->getFrameRate() ;}
     bool RaspiCam::isHorizontallyFlipped() const {return _impl->isHorizontallyFlipped()  ;}
     bool RaspiCam::isVerticallyFlipped() const {return _impl->isVerticallyFlipped() ;}
 

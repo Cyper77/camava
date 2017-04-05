@@ -165,7 +165,7 @@ namespace raspicam {
               *There is currently an upper limit of approximately 330000us (330ms, 0.33s) past which operation is undefined.
               */
             void setShutterSpeed ( unsigned int shutter ); //currently not  supported
-            void setFrameRate ( int fps );
+            void setFrameRate ( unsigned int fps );
 
             RASPICAM_FORMAT  getFormat() const {return State.captureFtm;}
             //Accessors
@@ -222,7 +222,7 @@ namespace raspicam {
 
             float getAWBG_blue(){return State.awbg_blue;}
 
-            int getFrameRate() const
+            unsigned int getFrameRate() const
             {
                 return State.framerate;
             }

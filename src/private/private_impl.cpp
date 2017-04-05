@@ -700,7 +700,7 @@ namespace raspicam {
             if ( isOpened() ) commitFlips();
         }
 
-        void Private_Impl::setFrameRate ( int frames_per_second ) {
+        void Private_Impl::setFrameRate ( unsigned int frames_per_second ) {
             State.framerate = frames_per_second;
         }
 
@@ -830,8 +830,10 @@ namespace raspicam {
             switch ( fmt ) {
             case RASPICAM_FORMAT_RGB:
                 return _rgb_bgr_fixed ? MMAL_ENCODING_RGB24 : MMAL_ENCODING_BGR24;
+//              return MMAL_ENCODING_RGB24;
             case RASPICAM_FORMAT_BGR:
                 return _rgb_bgr_fixed ? MMAL_ENCODING_BGR24 : MMAL_ENCODING_RGB24;
+//              return MMAL_ENCODING_RGB24;
             case RASPICAM_FORMAT_GRAY:
                 return MMAL_ENCODING_I420;
             case RASPICAM_FORMAT_YUV420:

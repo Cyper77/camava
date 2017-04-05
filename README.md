@@ -7,6 +7,14 @@ on this GIT repository by Cédric Verstraeten. Please note that is NOT the OFFIC
 
 This repository is used in the [Kerberos.io](https://github.com/kerberos-io) project.
 
+
+##Release notes 2
+
+Update 2017/04/05 : Updated to 0.1.6
+Update 2017/04/05 : Incorporated [usercallback](https://github.com/hodaig/raspicam)
+
+
+
 ##Release notes
 
 Update 2014/03/04: version 0.1.1 released Download at SourceForge
