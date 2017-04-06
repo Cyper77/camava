@@ -5,6 +5,26 @@ Update 2017/04/05 :
 - Incorporated [usercallback](https://github.com/hodaig/raspicam)
 - renamed to `camava` for clarity and to prohibit conflicts with the original `raspicam` [userland files](https://github.com/raspberrypi/userland) and libraries.
 
+When using this [Crosscompilation environment](https://github.com/HesselM/rpicross_notes/) compile with:
+```
+XCS~$ cd ~/rpi/src
+XCS~$ git clone https://github.com/HesselM/camava.git
+XCS~$ mkdir ~/rpi/build/camava
+XCS~$ cd ~/rpi/build/camava
+XCS~$ cmake \
+    -D CMAKE_TOOLCHAIN_FILE=/home/pi/rpicross_notes/rpi-generic-toolchain.cmake \
+    -D CMAKE_INSTALL_PREFIX=/home/pi/rpi/rootfs/usr \
+    ~/rpi/src/camava/ \
+XCS~$ make install
+XCS~$ ~/rpicross_notes/scripts/sync-vm-rpi.sh 
+```
+
+Testing:
+```
+XCS~$ ssh -X rpizero-local
+RPI~$ /usr/bin/camava_cv_test
+```
+
 # ORIGINAL README
 
 #CamAva: C++ API for using Raspberry camera (with OpenCV)
