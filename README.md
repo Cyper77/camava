@@ -3,17 +3,17 @@
 This library allows to use the Raspberry Pi Camera under BSD License. 
 
 The project is started by the AVA research group (rafael Muñoz Salinas; rmsalinas@uco.es) and is now maintained
-on this GIT repository by Cédric Verstraeten. Please note that is NOT the OFFICIAL repository of CamAva, these can be found [here](http://www.uco.es/investiga/grupos/ava/node/40).
+on this GIT repository by Cédric Verstraeten. Please note that is NOT the OFFICIAL repository of RaspiCam, these can be found [here](http://www.uco.es/investiga/grupos/ava/node/40).
 
 This repository is used in the [Kerberos.io](https://github.com/kerberos-io) project.
 
 
-##Release notes 2
+##Release notes 2 - By HesselM
 
-Update 2017/04/05 : Updated to 0.1.6
-Update 2017/04/05 : Incorporated [usercallback](https://github.com/hodaig/camava)
-
-
+Update 2017/04/05 : 
+- Updated to [0.1.5](http://www.uco.es/investiga/grupos/ava/node/40)
+- Incorporated [usercallback](https://github.com/hodaig/raspicam)
+- renamed to `camava` for clarity and to prohibit conflicts with the original `raspicam` [userland files](https://github.com/raspberrypi/userland) and libraries.
 
 ##Release notes
 
