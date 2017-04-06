@@ -35,16 +35,16 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/
 
-#ifndef _Private_RaspiCam_IMPL_H
-#define _Private_RaspiCam_IMPL_H
+#ifndef _Private_CamAva_IMPL_H
+#define _Private_CamAva_IMPL_H
 #include "mmal/mmal.h"
 //#include "mmal_connection.h"
 #include <mutex>
 #include <string>
-#include "raspicamtypes.h"
+#include "camavatypes.h"
 #include "private_types.h" 
 #include "threadcondition.h"
-namespace raspicam {
+namespace camava {
     namespace _private
     {
 
@@ -122,7 +122,7 @@ namespace raspicam {
             * So type param is ignored. Do not use this parameter.
             * You can use getFormat to know the current format
              */
-            void retrieve ( unsigned char *data,RASPICAM_FORMAT type=RASPICAM_FORMAT_IGNORE );
+            void retrieve ( unsigned char *data,CAMAVA_FORMAT type=CAMAVA_FORMAT_IGNORE );
             /**Alternative to retrieve. Returns a pointer to the original image data buffer.
               * Be careful, if you call grab(), this will be rewritten with the new data
              */
@@ -137,7 +137,7 @@ namespace raspicam {
             void release();
 
             //sets capture format. Can not be changed once camera is opened
-            void setFormat ( RASPICAM_FORMAT fmt );
+            void setFormat ( CAMAVA_FORMAT fmt );
             //sets sensor mode. Can not be changed once camera is opened
             void setSensorMode ( int mode );
 
@@ -150,14 +150,14 @@ namespace raspicam {
             void setSharpness ( int sharpness );
             void setContrast ( int contrast );
             void setSaturation ( int saturation );
-            void setExposure ( RASPICAM_EXPOSURE exposure );
+            void setExposure ( CAMAVA_EXPOSURE exposure );
             void setVideoStabilization ( bool v );
             void setExposureCompensation ( int val ); //-10,10
-            void setAWB ( RASPICAM_AWB awb );
+            void setAWB ( CAMAVA_AWB awb );
             void setAWB_RB ( float red,float blue );//ranges [0,1]
 
-            void setImageEffect ( RASPICAM_IMAGE_EFFECT imageEffect );
-            void setMetering ( RASPICAM_METERING metering );
+            void setImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect );
+            void setMetering ( CAMAVA_METERING metering );
             void setHorizontalFlip ( bool hFlip );
             void setVerticalFlip ( bool vFlip );
             /**
@@ -167,7 +167,7 @@ namespace raspicam {
             void setShutterSpeed ( unsigned int shutter ); //currently not  supported
             void setFrameRate ( unsigned int fps );
 
-            RASPICAM_FORMAT  getFormat() const {return State.captureFtm;}
+            CAMAVA_FORMAT  getFormat() const {return State.captureFtm;}
             //Accessors
             unsigned int getSensorMode() const
             {
@@ -209,11 +209,11 @@ namespace raspicam {
             {
                 return State.shutterSpeed;
             }
-            RASPICAM_EXPOSURE getExposure() const
+            CAMAVA_EXPOSURE getExposure() const
             {
                 return State.rpc_exposureMode;
             }
-            RASPICAM_AWB getAWB() const
+            CAMAVA_AWB getAWB() const
             {
                 return State.rpc_awbMode;
             }
@@ -227,11 +227,11 @@ namespace raspicam {
                 return State.framerate;
             }
 
-            RASPICAM_IMAGE_EFFECT getImageEffect() const
+            CAMAVA_IMAGE_EFFECT getImageEffect() const
             {
                 return State.rpc_imageEffect;
             }
-            RASPICAM_METERING getMetering() const
+            CAMAVA_METERING getMetering() const
             {
                 return State.rpc_exposureMeterMode;
             }
@@ -251,7 +251,7 @@ namespace raspicam {
 
             /**Returns the size of the required buffer for the different image types in retrieve
              */
-            size_t getImageTypeSize ( RASPICAM_FORMAT type ) const;
+            size_t getImageTypeSize ( CAMAVA_FORMAT type ) const;
 
             private:
             static void video_buffer_callback ( MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer );
@@ -279,11 +279,11 @@ namespace raspicam {
             void commitShutterSpeed();
             void commitAWB_RB();
 
-            MMAL_PARAM_EXPOSUREMODE_T convertExposure ( RASPICAM_EXPOSURE exposure ) ;
-            MMAL_PARAM_AWBMODE_T  convertAWB ( RASPICAM_AWB awb ) ;
-            MMAL_PARAM_IMAGEFX_T convertImageEffect ( RASPICAM_IMAGE_EFFECT imageEffect ) ;
-            MMAL_PARAM_EXPOSUREMETERINGMODE_T convertMetering ( RASPICAM_METERING metering ) ;
-            int convertFormat ( RASPICAM_FORMAT fmt ) ;
+            MMAL_PARAM_EXPOSUREMODE_T convertExposure ( CAMAVA_EXPOSURE exposure ) ;
+            MMAL_PARAM_AWBMODE_T  convertAWB ( CAMAVA_AWB awb ) ;
+            MMAL_PARAM_IMAGEFX_T convertImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect ) ;
+            MMAL_PARAM_EXPOSUREMETERINGMODE_T convertMetering ( CAMAVA_METERING metering ) ;
+            int convertFormat ( CAMAVA_FORMAT fmt ) ;
 
 
             //Color conversion

@@ -36,45 +36,45 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/
 
 #include "private_still/private_still_impl.h"
-#include "raspicam_still_cv.h"
+#include "camava_still_cv.h"
 #include "scaler.h"
 using namespace cv;
-namespace raspicam {
-    RaspiCam_Still_Cv::RaspiCam_Still_Cv() {
+namespace camava {
+    CamAva_Still_Cv::CamAva_Still_Cv() {
         _impl= new _private::Private_Impl_Still() ;
         _isOpened=false;
         image_buffer=0;
-        _impl->setEncoding ( raspicam::RASPICAM_ENCODING_RGB );
+        _impl->setEncoding ( camava::CAMAVA_ENCODING_RGB );
         _isGrabbed=false;
 	_impl->setVerticalFlip(true);
     }
-    RaspiCam_Still_Cv::~RaspiCam_Still_Cv() {
+    CamAva_Still_Cv::~CamAva_Still_Cv() {
         release();
         delete _impl;
     }
 
 
-    bool RaspiCam_Still_Cv::open ( ) {
+    bool CamAva_Still_Cv::open ( ) {
         _isOpened= _impl->initialize() ==0;
         return _isOpened;
     }
 
-    bool RaspiCam_Still_Cv::isOpened ( ) const{
+    bool CamAva_Still_Cv::isOpened ( ) const{
         return _isOpened;
     }
-    bool RaspiCam_Still_Cv::grab () {
+    bool CamAva_Still_Cv::grab () {
         if ( image_buffer==0 ) image_buffer=new uchar [ _impl-> getImageBufferSize()];
         _isGrabbed= _impl->takePicture ( image_buffer,  _impl-> getImageBufferSize() );
         return _isGrabbed;
     }
-    void RaspiCam_Still_Cv::retrieve ( cv::Mat &image ) {
+    void CamAva_Still_Cv::retrieve ( cv::Mat &image ) {
         if ( image_buffer!=0 && _isGrabbed ) {
             image.create ( _impl->getHeight(),_impl->getWidth(),CV_8UC3 );
             memcpy ( image.ptr<uchar> ( 0 ),image_buffer,image.cols*image.rows*3 );
         }
     }
 
-    void RaspiCam_Still_Cv::release() {}
+    void CamAva_Still_Cv::release() {}
 
 
 
@@ -82,7 +82,7 @@ namespace raspicam {
     /**Returns the specified VideoCapture property
      */
 
-    double RaspiCam_Still_Cv::get ( int propId ) {
+    double CamAva_Still_Cv::get ( int propId ) {
 
         switch ( propId ) {
 
@@ -121,7 +121,7 @@ namespace raspicam {
     /**Sets a property in the VideoCapture.
      */
 
-    bool RaspiCam_Still_Cv::set ( int propId, double value ) {
+    bool CamAva_Still_Cv::set ( int propId, double value ) {
 
         switch ( propId ) {
 
@@ -163,7 +163,7 @@ namespace raspicam {
 //             if ( value>0 && value<=100 ) {
 //                 _impl->setShutterSpeed ( Scaler::scale ( 0,100,0,330000, value ) );
 //             } else {
-//                 _impl->setExposure ( RASPICAM_EXPOSURE_AUTO );
+//                 _impl->setExposure ( CAMAVA_EXPOSURE_AUTO );
 //                 _impl->setShutterSpeed ( 0 );
 //             }
             break;
@@ -177,7 +177,7 @@ namespace raspicam {
         return true;
 
     }
-    std::string RaspiCam_Still_Cv::getId() const{
+    std::string CamAva_Still_Cv::getId() const{
         return _impl->getId();
     }
 }

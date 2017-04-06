@@ -3,7 +3,8 @@
 # ----------------------------------------------------------------------------
 CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
 
-PROJECT(raspicam)
+PROJECT(camava)
+
 set(PROJECT_VERSION "0.1.6")
 string(REGEX MATCHALL "[0-9]" PROJECT_VERSION_PARTS "${PROJECT_VERSION}")
 list(GET PROJECT_VERSION_PARTS 0 PROJECT_VERSION_MAJOR)
@@ -47,7 +48,7 @@ IF( (NOT mmal_LIBS ) OR (NOT mmalutil_LIBS) OR (NOT mmalcore_LIBS) )
  set(REQUIRED_LIBRARIES ${REQUIRED_LIBRARIES} ${mmalcore_LIBS} ${mmalutil_LIBS} ${mmal_LIBS}  )
 ENDIF()
 
-#If opencv installed, creates the libraspicam_cv library module
+#If opencv installed, creates the libcamava_cv library module
 FIND_PACKAGE(OpenCV)
 IF(OpenCV_FOUND)
   include_directories(${OpenCV_INCLUDE_DIRS})

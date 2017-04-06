@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <cstdlib>
 #include <fstream>
 #include <sstream>
-#include "raspicam_cv.h"
+#include "camava_cv.h"
 
 using namespace std;
 bool doTestSpeedOnly=false;
@@ -64,7 +64,7 @@ float getParamVal ( string param,int argc,char **argv,float defvalue=-1 ) {
     else return atof ( argv[  idx+1] );
 }
 
-void processCommandLine ( int argc,char **argv,raspicam::RaspiCam_Cv &Camera ) {
+void processCommandLine ( int argc,char **argv,camava::CamAva_Cv &Camera ) {
     Camera.set ( CV_CAP_PROP_FRAME_WIDTH,  getParamVal ( "-w",argc,argv,1280 ) );
     Camera.set ( CV_CAP_PROP_FRAME_HEIGHT, getParamVal ( "-h",argc,argv,960 ) );
     Camera.set ( CV_CAP_PROP_BRIGHTNESS,getParamVal ( "-br",argc,argv,50 ) );
@@ -118,7 +118,7 @@ int main ( int argc,char **argv ) {
         return -1;
     }
 
-    raspicam::RaspiCam_Cv Camera;
+    camava::CamAva_Cv Camera;
     processCommandLine ( argc,argv,Camera );
     cout<<"Connecting to camera"<<endl;
     if ( !Camera.open() ) {

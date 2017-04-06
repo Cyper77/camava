@@ -1,6 +1,6 @@
-#ifndef _RASPICAM_SCALER_H_
-#define _RASPICAM_SCALER_H_
-namespace raspicam {
+#ifndef _CAMAVA_SCALER_H_
+#define _CAMAVA_SCALER_H_
+namespace camava {
 
     /**CLass to calculate linear scale
      */

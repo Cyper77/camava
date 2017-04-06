@@ -44,7 +44,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <iostream>
 #include <semaphore.h>
 using namespace std;
-namespace raspicam {
+namespace camava {
     namespace _private
     {
         typedef struct {
@@ -57,7 +57,7 @@ namespace raspicam {
             unsigned int startingOffset;
             unsigned int offset;
             unsigned int length;
-        } RASPICAM_USERDATA;
+        } CAMAVA_USERDATA;
 
         static void control_callback ( MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer ) {
             (void)port;
@@ -69,7 +69,7 @@ namespace raspicam {
         }
 
         static void buffer_callback ( MMAL_PORT_T *port, MMAL_BUFFER_HEADER_T *buffer ) {
-            RASPICAM_USERDATA *userdata = ( RASPICAM_USERDATA* ) port->userdata;
+            CAMAVA_USERDATA *userdata = ( CAMAVA_USERDATA* ) port->userdata;
             if ( userdata == NULL || userdata->cameraBoard == NULL ) {
 
             } else {
@@ -81,7 +81,7 @@ namespace raspicam {
                         userdata->cameraBoard = NULL;
                         break;
                     } else {
-                        if ( userdata->cameraBoard->getEncoding() == RASPICAM_ENCODING_RGB ) {
+                        if ( userdata->cameraBoard->getEncoding() == CAMAVA_ENCODING_RGB ) {
                             // Determines if the byte is an RGB value
                             if ( userdata->bufferPosition >= 54 ) {
                                 userdata->data[userdata->offset] = buffer->data[i];
@@ -116,7 +116,7 @@ namespace raspicam {
         void Private_Impl_Still::setDefaults() {
             width = 640;
             height = 480;
-            encoding = RASPICAM_ENCODING_BMP;
+            encoding = CAMAVA_ENCODING_BMP;
             encoder = NULL;
             encoder_connection = NULL;
             sharpness = 0;
@@ -127,10 +127,10 @@ namespace raspicam {
             iso = 400;
             //videoStabilisation = 0;
             //exposureCompensation = 0;
-            exposure = RASPICAM_EXPOSURE_AUTO;
-            metering = RASPICAM_METERING_AVERAGE;
-            awb = RASPICAM_AWB_AUTO;
-            imageEffect = RASPICAM_IMAGE_EFFECT_NONE;
+            exposure = CAMAVA_EXPOSURE_AUTO;
+            metering = CAMAVA_METERING_AVERAGE;
+            awb = CAMAVA_AWB_AUTO;
+            imageEffect = CAMAVA_IMAGE_EFFECT_NONE;
             //colourEffects.enable = 0;
             //colourEffects.u = 128;
             //colourEffects.v = 128;
@@ -360,7 +360,7 @@ namespace raspicam {
             int ret = 0;
             sem_t mutex;
             sem_init ( &mutex, 0, 0 );
-            RASPICAM_USERDATA * userdata = new RASPICAM_USERDATA();
+            CAMAVA_USERDATA * userdata = new CAMAVA_USERDATA();
             userdata->cameraBoard = this;
             userdata->encoderPool = encoder_pool;
             userdata->mutex = &mutex;
@@ -388,7 +388,7 @@ namespace raspicam {
         }
 
         int Private_Impl_Still::startCapture ( imageTakenCallback userCallback, unsigned char * preallocated_data, unsigned int offset, unsigned int length ) {
-            RASPICAM_USERDATA * userdata = new RASPICAM_USERDATA();
+            CAMAVA_USERDATA * userdata = new CAMAVA_USERDATA();
             userdata->cameraBoard = this;
             userdata->encoderPool = encoder_pool;
             userdata->mutex = NULL;
@@ -436,7 +436,7 @@ namespace raspicam {
         void Private_Impl_Still::stopCapture() {
             if ( !encoder_output_port->is_enabled ) return;
             if ( mmal_port_disable ( encoder_output_port ) )
-                delete ( RASPICAM_USERDATA* ) encoder_output_port->userdata;
+                delete ( CAMAVA_USERDATA* ) encoder_output_port->userdata;
         }
 
         void Private_Impl_Still::setWidth ( unsigned int width ) {
@@ -503,27 +503,27 @@ namespace raspicam {
             changedSettings = true;
         }
 
-        void Private_Impl_Still::setEncoding ( RASPICAM_ENCODING encoding ) {
+        void Private_Impl_Still::setEncoding ( CAMAVA_ENCODING encoding ) {
             this->encoding = encoding;
             changedSettings = true;
         }
 
-        void Private_Impl_Still::setExposure ( RASPICAM_EXPOSURE exposure ) {
+        void Private_Impl_Still::setExposure ( CAMAVA_EXPOSURE exposure ) {
             this->exposure = exposure;
             changedSettings = true;
         }
 
-        void Private_Impl_Still::setAWB ( RASPICAM_AWB awb ) {
+        void Private_Impl_Still::setAWB ( CAMAVA_AWB awb ) {
             this->awb = awb;
             changedSettings = true;
         }
 
-        void Private_Impl_Still::setImageEffect ( RASPICAM_IMAGE_EFFECT imageEffect ) {
+        void Private_Impl_Still::setImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect ) {
             this->imageEffect = imageEffect;
             changedSettings = true;
         }
 
-        void Private_Impl_Still::setMetering ( RASPICAM_METERING metering ) {
+        void Private_Impl_Still::setMetering ( CAMAVA_METERING metering ) {
             this->metering = metering;
             changedSettings = true;
         }
@@ -574,23 +574,23 @@ namespace raspicam {
             return saturation;
         }
 
-        RASPICAM_ENCODING Private_Impl_Still::getEncoding() {
+        CAMAVA_ENCODING Private_Impl_Still::getEncoding() {
             return encoding;
         }
 
-        RASPICAM_EXPOSURE Private_Impl_Still::getExposure() {
+        CAMAVA_EXPOSURE Private_Impl_Still::getExposure() {
             return exposure;
         }
 
-        RASPICAM_AWB Private_Impl_Still::getAWB() {
+        CAMAVA_AWB Private_Impl_Still::getAWB() {
             return awb;
         }
 
-        RASPICAM_IMAGE_EFFECT Private_Impl_Still::getImageEffect() {
+        CAMAVA_IMAGE_EFFECT Private_Impl_Still::getImageEffect() {
             return imageEffect;
         }
 
-        RASPICAM_METERING Private_Impl_Still::getMetering() {
+        CAMAVA_METERING Private_Impl_Still::getMetering() {
             return metering;
         }
 
@@ -684,140 +684,140 @@ namespace raspicam {
                 cout << API_NAME << ": Failed to set horizontal/vertical flip parameter.\n";
         }
 
-        MMAL_FOURCC_T Private_Impl_Still::convertEncoding ( RASPICAM_ENCODING encoding ) {
+        MMAL_FOURCC_T Private_Impl_Still::convertEncoding ( CAMAVA_ENCODING encoding ) {
             switch ( encoding ) {
-            case RASPICAM_ENCODING_JPEG:
+            case CAMAVA_ENCODING_JPEG:
                 return MMAL_ENCODING_JPEG;
-            case RASPICAM_ENCODING_BMP:
+            case CAMAVA_ENCODING_BMP:
                 return MMAL_ENCODING_BMP;
-            case RASPICAM_ENCODING_GIF:
+            case CAMAVA_ENCODING_GIF:
                 return MMAL_ENCODING_GIF;
-            case RASPICAM_ENCODING_PNG:
+            case CAMAVA_ENCODING_PNG:
                 return MMAL_ENCODING_PNG;
-            case RASPICAM_ENCODING_RGB:
+            case CAMAVA_ENCODING_RGB:
                 return MMAL_ENCODING_BMP;
             default:
                 return -1;
             }
         }
 
-        MMAL_PARAM_EXPOSUREMETERINGMODE_T Private_Impl_Still::convertMetering ( RASPICAM_METERING metering ) {
+        MMAL_PARAM_EXPOSUREMETERINGMODE_T Private_Impl_Still::convertMetering ( CAMAVA_METERING metering ) {
             switch ( metering ) {
-            case RASPICAM_METERING_AVERAGE:
+            case CAMAVA_METERING_AVERAGE:
                 return MMAL_PARAM_EXPOSUREMETERINGMODE_AVERAGE;
-            case RASPICAM_METERING_SPOT:
+            case CAMAVA_METERING_SPOT:
                 return  MMAL_PARAM_EXPOSUREMETERINGMODE_SPOT;
-            case RASPICAM_METERING_BACKLIT:
+            case CAMAVA_METERING_BACKLIT:
                 return MMAL_PARAM_EXPOSUREMETERINGMODE_BACKLIT;
-            case RASPICAM_METERING_MATRIX:
+            case CAMAVA_METERING_MATRIX:
                 return MMAL_PARAM_EXPOSUREMETERINGMODE_MATRIX;
             default:
                 return MMAL_PARAM_EXPOSUREMETERINGMODE_AVERAGE;
             }
         }
 
-        MMAL_PARAM_EXPOSUREMODE_T Private_Impl_Still::convertExposure ( RASPICAM_EXPOSURE exposure ) {
+        MMAL_PARAM_EXPOSUREMODE_T Private_Impl_Still::convertExposure ( CAMAVA_EXPOSURE exposure ) {
             switch ( exposure ) {
-            case RASPICAM_EXPOSURE_OFF:
+            case CAMAVA_EXPOSURE_OFF:
                 return MMAL_PARAM_EXPOSUREMODE_OFF;
-            case RASPICAM_EXPOSURE_AUTO:
+            case CAMAVA_EXPOSURE_AUTO:
                 return MMAL_PARAM_EXPOSUREMODE_AUTO;
-            case RASPICAM_EXPOSURE_NIGHT:
+            case CAMAVA_EXPOSURE_NIGHT:
                 return MMAL_PARAM_EXPOSUREMODE_NIGHT;
-            case RASPICAM_EXPOSURE_NIGHTPREVIEW:
+            case CAMAVA_EXPOSURE_NIGHTPREVIEW:
                 return MMAL_PARAM_EXPOSUREMODE_NIGHTPREVIEW;
-            case RASPICAM_EXPOSURE_BACKLIGHT:
+            case CAMAVA_EXPOSURE_BACKLIGHT:
                 return MMAL_PARAM_EXPOSUREMODE_BACKLIGHT;
-            case RASPICAM_EXPOSURE_SPOTLIGHT:
+            case CAMAVA_EXPOSURE_SPOTLIGHT:
                 return MMAL_PARAM_EXPOSUREMODE_SPOTLIGHT;
-            case RASPICAM_EXPOSURE_SPORTS:
+            case CAMAVA_EXPOSURE_SPORTS:
                 return MMAL_PARAM_EXPOSUREMODE_SPORTS;
-            case RASPICAM_EXPOSURE_SNOW:
+            case CAMAVA_EXPOSURE_SNOW:
                 return MMAL_PARAM_EXPOSUREMODE_SNOW;
-            case RASPICAM_EXPOSURE_BEACH:
+            case CAMAVA_EXPOSURE_BEACH:
                 return MMAL_PARAM_EXPOSUREMODE_BEACH;
-            case RASPICAM_EXPOSURE_VERYLONG:
+            case CAMAVA_EXPOSURE_VERYLONG:
                 return MMAL_PARAM_EXPOSUREMODE_VERYLONG;
-            case RASPICAM_EXPOSURE_FIXEDFPS:
+            case CAMAVA_EXPOSURE_FIXEDFPS:
                 return MMAL_PARAM_EXPOSUREMODE_FIXEDFPS;
-            case RASPICAM_EXPOSURE_ANTISHAKE:
+            case CAMAVA_EXPOSURE_ANTISHAKE:
                 return MMAL_PARAM_EXPOSUREMODE_ANTISHAKE;
-            case RASPICAM_EXPOSURE_FIREWORKS:
+            case CAMAVA_EXPOSURE_FIREWORKS:
                 return MMAL_PARAM_EXPOSUREMODE_FIREWORKS;
             default:
                 return MMAL_PARAM_EXPOSUREMODE_AUTO;
             }
         }
 
-        MMAL_PARAM_AWBMODE_T Private_Impl_Still::convertAWB ( RASPICAM_AWB awb ) {
+        MMAL_PARAM_AWBMODE_T Private_Impl_Still::convertAWB ( CAMAVA_AWB awb ) {
             switch ( awb ) {
-            case RASPICAM_AWB_OFF:
+            case CAMAVA_AWB_OFF:
                 return MMAL_PARAM_AWBMODE_OFF;
-            case RASPICAM_AWB_AUTO:
+            case CAMAVA_AWB_AUTO:
                 return MMAL_PARAM_AWBMODE_AUTO;
-            case RASPICAM_AWB_SUNLIGHT:
+            case CAMAVA_AWB_SUNLIGHT:
                 return MMAL_PARAM_AWBMODE_SUNLIGHT;
-            case RASPICAM_AWB_CLOUDY:
+            case CAMAVA_AWB_CLOUDY:
                 return MMAL_PARAM_AWBMODE_CLOUDY;
-            case RASPICAM_AWB_SHADE:
+            case CAMAVA_AWB_SHADE:
                 return MMAL_PARAM_AWBMODE_SHADE;
-            case RASPICAM_AWB_TUNGSTEN:
+            case CAMAVA_AWB_TUNGSTEN:
                 return MMAL_PARAM_AWBMODE_TUNGSTEN;
-            case RASPICAM_AWB_FLUORESCENT:
+            case CAMAVA_AWB_FLUORESCENT:
                 return MMAL_PARAM_AWBMODE_FLUORESCENT;
-            case RASPICAM_AWB_INCANDESCENT:
+            case CAMAVA_AWB_INCANDESCENT:
                 return MMAL_PARAM_AWBMODE_INCANDESCENT;
-            case RASPICAM_AWB_FLASH:
+            case CAMAVA_AWB_FLASH:
                 return MMAL_PARAM_AWBMODE_FLASH;
-            case RASPICAM_AWB_HORIZON:
+            case CAMAVA_AWB_HORIZON:
                 return MMAL_PARAM_AWBMODE_HORIZON;
             default:
                 return MMAL_PARAM_AWBMODE_AUTO;
             }
         }
 
-        MMAL_PARAM_IMAGEFX_T Private_Impl_Still::convertImageEffect ( RASPICAM_IMAGE_EFFECT imageEffect ) {
+        MMAL_PARAM_IMAGEFX_T Private_Impl_Still::convertImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect ) {
             switch ( imageEffect ) {
             default:
-            case RASPICAM_IMAGE_EFFECT_NONE:
+            case CAMAVA_IMAGE_EFFECT_NONE:
                 return MMAL_PARAM_IMAGEFX_NONE;
-            case RASPICAM_IMAGE_EFFECT_NEGATIVE:
+            case CAMAVA_IMAGE_EFFECT_NEGATIVE:
                 return MMAL_PARAM_IMAGEFX_NEGATIVE;
-            case RASPICAM_IMAGE_EFFECT_SOLARIZE:
+            case CAMAVA_IMAGE_EFFECT_SOLARIZE:
                 return MMAL_PARAM_IMAGEFX_SOLARIZE;
-            case RASPICAM_IMAGE_EFFECT_SKETCH:
+            case CAMAVA_IMAGE_EFFECT_SKETCH:
                 return MMAL_PARAM_IMAGEFX_SKETCH;
-            case RASPICAM_IMAGE_EFFECT_DENOISE:
+            case CAMAVA_IMAGE_EFFECT_DENOISE:
                 return MMAL_PARAM_IMAGEFX_DENOISE;
-            case RASPICAM_IMAGE_EFFECT_EMBOSS:
+            case CAMAVA_IMAGE_EFFECT_EMBOSS:
                 return MMAL_PARAM_IMAGEFX_EMBOSS;
-            case RASPICAM_IMAGE_EFFECT_OILPAINT:
+            case CAMAVA_IMAGE_EFFECT_OILPAINT:
                 return MMAL_PARAM_IMAGEFX_OILPAINT;
-            case RASPICAM_IMAGE_EFFECT_HATCH:
+            case CAMAVA_IMAGE_EFFECT_HATCH:
                 return MMAL_PARAM_IMAGEFX_HATCH;
-            case RASPICAM_IMAGE_EFFECT_GPEN:
+            case CAMAVA_IMAGE_EFFECT_GPEN:
                 return MMAL_PARAM_IMAGEFX_GPEN;
-            case RASPICAM_IMAGE_EFFECT_PASTEL:
+            case CAMAVA_IMAGE_EFFECT_PASTEL:
                 return MMAL_PARAM_IMAGEFX_PASTEL;
-            case RASPICAM_IMAGE_EFFECT_WATERCOLOR:
+            case CAMAVA_IMAGE_EFFECT_WATERCOLOR:
                 return MMAL_PARAM_IMAGEFX_WATERCOLOUR;
-            case RASPICAM_IMAGE_EFFECT_FILM:
+            case CAMAVA_IMAGE_EFFECT_FILM:
                 return MMAL_PARAM_IMAGEFX_FILM;
-            case RASPICAM_IMAGE_EFFECT_BLUR:
+            case CAMAVA_IMAGE_EFFECT_BLUR:
                 return MMAL_PARAM_IMAGEFX_BLUR;
-            case RASPICAM_IMAGE_EFFECT_SATURATION:
+            case CAMAVA_IMAGE_EFFECT_SATURATION:
                 return MMAL_PARAM_IMAGEFX_SATURATION;
-            case RASPICAM_IMAGE_EFFECT_COLORSWAP:
+            case CAMAVA_IMAGE_EFFECT_COLORSWAP:
                 return MMAL_PARAM_IMAGEFX_COLOURSWAP;
-            case RASPICAM_IMAGE_EFFECT_WASHEDOUT:
+            case CAMAVA_IMAGE_EFFECT_WASHEDOUT:
                 return MMAL_PARAM_IMAGEFX_WASHEDOUT;
-            case RASPICAM_IMAGE_EFFECT_POSTERISE:
+            case CAMAVA_IMAGE_EFFECT_POSTERISE:
                 return MMAL_PARAM_IMAGEFX_POSTERISE;
-            case RASPICAM_IMAGE_EFFECT_COLORPOINT:
+            case CAMAVA_IMAGE_EFFECT_COLORPOINT:
                 return MMAL_PARAM_IMAGEFX_COLOURPOINT;
-            case RASPICAM_IMAGE_EFFECT_COLORBALANCE:
+            case CAMAVA_IMAGE_EFFECT_COLORBALANCE:
                 return MMAL_PARAM_IMAGEFX_COLOURBALANCE;
-            case RASPICAM_IMAGE_EFFECT_CARTOON:
+            case CAMAVA_IMAGE_EFFECT_CARTOON:
                 return MMAL_PARAM_IMAGEFX_CARTOON;
             }
         }

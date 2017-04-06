@@ -36,10 +36,10 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/#include <iostream>
 #include <fstream>
 #include <cstdlib>
-#include "raspicam_still.h"
+#include "camava_still.h"
 using namespace std;
 
-raspicam::RaspiCam_Still Camera;
+camava::CamAva_Still Camera;
 //Returns the value of a param. If not present, returns the defvalue
 float getParamVal ( string id,int argc,char **argv,float defvalue ) {
     for ( int i=0; i<argc; i++ )
@@ -69,7 +69,7 @@ int main ( int argc, char *argv[] ) {
     Camera.setWidth ( width );
     Camera.setHeight ( height );
     Camera.setISO(iso);
-    Camera.setEncoding ( raspicam::RASPICAM_ENCODING_BMP );
+    Camera.setEncoding ( camava::CAMAVA_ENCODING_BMP );
     Camera.open();
     cout<<"capture"<<endl;
     unsigned int length = Camera.getImageBufferSize(); // Header + Image Data + Padding

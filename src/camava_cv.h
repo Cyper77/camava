@@ -35,26 +35,26 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/
 
-#ifndef RaspiCam_CV_H
-#define RaspiCam_CV_H
+#ifndef CamAva_CV_H
+#define CamAva_CV_H
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
-namespace raspicam {
+namespace camava {
 
     namespace _private{
         class Private_Impl;
     };
     /**Class for using Raspberry camera as in opencv
     */
-    class RaspiCam_Cv {
+    class CamAva_Cv {
         _private::Private_Impl *_impl;
         public:
         /**Constructor
          */
-        RaspiCam_Cv();
+        CamAva_Cv();
         /**Destructor
          */
-        ~RaspiCam_Cv();
+        ~CamAva_Cv();
         /** Open  capturing device for video capturing
          */
         bool open ( void );

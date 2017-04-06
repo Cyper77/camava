@@ -35,10 +35,10 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/
 
-#ifndef _RaspiCam_private_types_H
-#define _RaspiCam_private_types_H
+#ifndef _CamAva_private_types_H
+#define _CamAva_private_types_H
 
-namespace raspicam {
+namespace camava {
     namespace _private{
 
 
@@ -73,11 +73,11 @@ namespace raspicam {
             bool videoStabilisation;    /// 0 or 1 (false or true)
             int exposureCompensation;  /// -10 to +10 ?
             int shutterSpeed;
-	    RASPICAM_FORMAT captureFtm;
-            RASPICAM_EXPOSURE rpc_exposureMode;
-            RASPICAM_METERING rpc_exposureMeterMode;
-            RASPICAM_AWB rpc_awbMode;
-            RASPICAM_IMAGE_EFFECT rpc_imageEffect;
+	    CAMAVA_FORMAT captureFtm;
+            CAMAVA_EXPOSURE rpc_exposureMode;
+            CAMAVA_METERING rpc_exposureMeterMode;
+            CAMAVA_AWB rpc_awbMode;
+            CAMAVA_IMAGE_EFFECT rpc_imageEffect;
             MMAL_PARAMETER_IMAGEFX_PARAMETERS_T imageEffectsParameters;
             MMAL_PARAM_COLOURFX_T colourEffects;
             int rotation;              /// 0-359

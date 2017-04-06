@@ -2,9 +2,9 @@ INCLUDE_DIRECTORIES(.)
 SET(private_hdrs_base "private/private_types.h  private/private_impl.h exceptions.h private/threadcondition.h ")
 SET(private_still_hdrs_base "private_still/private_still_types.h  private/private_still_impl.h")
 
-SET(public_hdrs_base raspicamtypes.h raspicam.h)
+SET(public_hdrs_base camavatypes.h camava.h)
 
-SET(srcs_base raspicam.cpp raspicam_still.cpp  private/private_impl.cpp private/threadcondition.cpp  private_still/private_still_impl.cpp)
+SET(srcs_base camava.cpp camava_still.cpp  private/private_impl.cpp private/threadcondition.cpp  private_still/private_still_impl.cpp)
 if(NOT( ${CMAKE_SYSTEM_PROCESSOR} MATCHES arm*) )#in a pc, adds fake dependencies to mmal functions to enable compilation
 SET(srcs_base ${srcs_base} private/fake_mmal_dependencies.cpp)
 endif()
@@ -28,8 +28,8 @@ INSTALL(TARGETS ${PROJECT_NAME}
 #Opencv Lib	
 IF (${OpenCV_FOUND})
 message(STATUS "Adding cv library")
-SET(hdrs_cv raspicam_cv.h raspicam_still_cv.h)
-SET(srcs_cv raspicam_cv.cpp raspicam_still_cv.cpp)
+SET(hdrs_cv camava_cv.h camava_still_cv.h)
+SET(srcs_cv camava_cv.cpp camava_still_cv.cpp)
 ADD_LIBRARY(${PROJECT_NAME}_cv ${hdrs_cv} ${srcs_cv} ${srcs_base})
 SET_TARGET_PROPERTIES(${PROJECT_NAME} PROPERTIES 				# create *nix style library versions + symbolic links
 	DEFINE_SYMBOL DSO_EXPORTS

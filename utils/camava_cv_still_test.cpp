@@ -34,85 +34,49 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/
-#ifndef _RaspiCam_STILL_H
-#define _RaspiCam_STILL_H
-#include <opencv2/highgui/highgui.hpp>
-#include "raspicamtypes.h"
-#include <cstdio>
-#include <opencv2/core/core.hpp>
-namespace raspicam {
+#include <iostream>
+#include <fstream>
+#include <cstdlib>
+#include "camava_still_cv.h"
+using namespace std;
 
-    namespace _private{
-        class Private_Impl_Still;
-    };
-
-
-    /**Raspicam API for still camera
-     */
-    class RaspiCam_Still_Cv{
-        //the implementation of the camera
-        _private::Private_Impl_Still *_impl;
-
-        public:
-        /**Constructor
-         */
-        RaspiCam_Still_Cv();
-        /**Destructor
-         */
-        ~RaspiCam_Still_Cv();
-        /** Open  capturing device for video capturing
-         */
-        bool open ( void );
-        /**
-         * Returns true if video capturing has been initialized already.
-         */
-        bool isOpened() const;
-        /**
-        *Closes video file or capturing device.
-        */
-        void release();
-
-        /**
-         * Grabs the next frame from video file or capturing device.
-         */
-        bool grab();
-
-        /**
-        *Decodes and returns the grabbed video frame.
-         */
-        void retrieve ( cv::Mat& image );
-
-        /**Returns the specified VideoCapture property
-         */
-
-        double get ( int propId );
-
-        /**Sets a property in the VideoCapture.
-        *
-         *
-         * Implemented properties:
-         * CV_CAP_PROP_FRAME_WIDTH,CV_CAP_PROP_FRAME_HEIGHT,
-         * CV_CAP_PROP_FORMAT: CV_8UC1 or CV_8UC3
-         * CV_CAP_PROP_BRIGHTNESS: [0,100]
-         * CV_CAP_PROP_CONTRAST: [0,100]
-         * CV_CAP_PROP_SATURATION: [0,100]
-         * CV_CAP_PROP_GAIN: (iso): [0,100]
-         * CV_CAP_PROP_EXPOSURE: -1 auto. [1,100] shutter speed from 0 to 33ms
-         *
-               */
-
-        bool set ( int propId, double value );
-
-        /** Returns the camera identifier. We assume the camera id is the one of the raspberry obtained using raspberry serial number obtained in /proc/cpuinfo
-         */
-        std::string getId() const;
-
-        private:
-        uchar *image_buffer;
-        bool _isOpened;
-	bool _isGrabbed;
-
-    };
+camava::CamAva_Still_Cv Camera;
+//Returns the value of a param. If not present, returns the defvalue
+float getParamVal ( string id,int argc,char **argv,float defvalue ) {
+    for ( int i=0; i<argc; i++ )
+        if ( id== argv[i] )
+            return atof ( argv[i+1] );
+    return defvalue;
 }
-#endif
+
+
+//prints program command line usage
+void usage() {
+    cout<<"-w val : sets image width (2592 default)"<<endl;
+    cout<<"-h val : sets image height (1944 default)"<<endl;
+//     cout<<"-iso val: set iso [100,800] (400 default)"<<endl;
+}
+
+
+int main ( int argc, char *argv[] ) {
+    usage();
+
+    int width = getParamVal ( "-w",argc,argv,2592 );//define width
+    int height =getParamVal ( "-h",argc,argv,1944 );//define height
+    cout << "Initializing ..."<<width<<"x"<<height<<endl;
+    Camera.set ( CV_CAP_PROP_FRAME_WIDTH, width );
+    Camera.set ( CV_CAP_PROP_FRAME_HEIGHT, height );
+    Camera.open();
+    cv::Mat image;
+    cout<<"capturing"<<endl;
+    if ( !Camera.grab ( ) ) {
+        cerr<<"Error in grab"<<endl;
+        return -1;
+    }
+    Camera.retrieve ( image );
+    cout<<"saving picture.jpg"<<endl;
+
+    cv::imwrite ( "picture.jpg",image );
+    return 0;
+}
 

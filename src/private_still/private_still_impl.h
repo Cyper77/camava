@@ -35,16 +35,16 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/
 
-#ifndef _Private_RaspiCam_STILL_IMPL_H
-#define _Private_RaspiCam_STILL_IMPL_H
-#include "raspicamtypes.h"
+#ifndef _Private_CamAva_STILL_IMPL_H
+#define _Private_CamAva_STILL_IMPL_H
+#include "camavatypes.h"
 #include "mmal/mmal.h"
 #include "mmal/util/mmal_connection.h"
 #include <string>
 #define MMAL_CAMERA_CAPTURE_PORT 2
 #define STILLS_FRAME_RATE_NUM 3
 #define STILLS_FRAME_RATE_DEN 1
-namespace raspicam {
+namespace camava {
     namespace _private
     {
         typedef void ( *imageTakenCallback ) ( unsigned char * data, unsigned int image_offset, unsigned int length );
@@ -69,20 +69,20 @@ namespace raspicam {
             int sharpness; // -100 to 100
             int contrast; // -100 to 100
             int saturation; // -100 to 100
-            RASPICAM_ENCODING encoding;
-            RASPICAM_EXPOSURE exposure;
-            RASPICAM_AWB awb;
-            RASPICAM_IMAGE_EFFECT imageEffect;
-            RASPICAM_METERING metering;
+            CAMAVA_ENCODING encoding;
+            CAMAVA_EXPOSURE exposure;
+            CAMAVA_AWB awb;
+            CAMAVA_IMAGE_EFFECT imageEffect;
+            CAMAVA_METERING metering;
             bool changedSettings;
             bool horizontalFlip;
             bool verticalFlip;
 
-            MMAL_FOURCC_T convertEncoding ( RASPICAM_ENCODING encoding );
-            MMAL_PARAM_EXPOSUREMETERINGMODE_T convertMetering ( RASPICAM_METERING metering );
-            MMAL_PARAM_EXPOSUREMODE_T convertExposure ( RASPICAM_EXPOSURE exposure );
-            MMAL_PARAM_AWBMODE_T convertAWB ( RASPICAM_AWB awb );
-            MMAL_PARAM_IMAGEFX_T convertImageEffect ( RASPICAM_IMAGE_EFFECT imageEffect );
+            MMAL_FOURCC_T convertEncoding ( CAMAVA_ENCODING encoding );
+            MMAL_PARAM_EXPOSUREMETERINGMODE_T convertMetering ( CAMAVA_METERING metering );
+            MMAL_PARAM_EXPOSUREMODE_T convertExposure ( CAMAVA_EXPOSURE exposure );
+            MMAL_PARAM_AWBMODE_T convertAWB ( CAMAVA_AWB awb );
+            MMAL_PARAM_IMAGEFX_T convertImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect );
             void commitBrightness();
             void commitQuality();
             void commitRotation();
@@ -136,11 +136,11 @@ namespace raspicam {
             void setSharpness ( int sharpness );
             void setContrast ( int contrast );
             void setSaturation ( int saturation );
-            void setEncoding ( RASPICAM_ENCODING encoding );
-            void setExposure ( RASPICAM_EXPOSURE exposure );
-            void setAWB ( RASPICAM_AWB awb );
-            void setImageEffect ( RASPICAM_IMAGE_EFFECT imageEffect );
-            void setMetering ( RASPICAM_METERING metering );
+            void setEncoding ( CAMAVA_ENCODING encoding );
+            void setExposure ( CAMAVA_EXPOSURE exposure );
+            void setAWB ( CAMAVA_AWB awb );
+            void setImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect );
+            void setMetering ( CAMAVA_METERING metering );
             void setHorizontalFlip ( bool hFlip );
             void setVerticalFlip ( bool vFlip );
 
@@ -153,11 +153,11 @@ namespace raspicam {
             int getSharpness();
             int getContrast();
             int getSaturation();
-            RASPICAM_ENCODING getEncoding();
-            RASPICAM_EXPOSURE getExposure();
-            RASPICAM_AWB getAWB();
-            RASPICAM_IMAGE_EFFECT getImageEffect();
-            RASPICAM_METERING getMetering();
+            CAMAVA_ENCODING getEncoding();
+            CAMAVA_EXPOSURE getExposure();
+            CAMAVA_AWB getAWB();
+            CAMAVA_IMAGE_EFFECT getImageEffect();
+            CAMAVA_METERING getMetering();
             bool isHorizontallyFlipped();
             bool isVerticallyFlipped();
 
@@ -170,4 +170,4 @@ namespace raspicam {
 
     }
 }
-#endif // RASPICAM_H
+#endif // CAMAVA_H

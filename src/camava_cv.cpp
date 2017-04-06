@@ -35,55 +35,55 @@
  SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  ****************************************************************/
 
-#include "raspicam_cv.h"
+#include "camava_cv.h"
 #include "private/private_impl.h"
 #include <iostream>
 #include <opencv2/highgui/highgui.hpp>
 #include "scaler.h"
-namespace raspicam {
-    RaspiCam_Cv::RaspiCam_Cv() {
+namespace camava {
+    CamAva_Cv::CamAva_Cv() {
         _impl=new _private::Private_Impl();
         set(CV_CAP_PROP_FORMAT,CV_8UC3);
         
     }
-    RaspiCam_Cv::~RaspiCam_Cv() {
+    CamAva_Cv::~CamAva_Cv() {
         delete _impl;
     }
     
     /** Open  capturing device for video capturing
      */
-    bool RaspiCam_Cv::open ( void ) {
+    bool CamAva_Cv::open ( void ) {
         return _impl->open();
     }
     /**
      * Returns true if video capturing has been initialized already.
      */
-    bool RaspiCam_Cv::isOpened() const {return _impl->isOpened();}
+    bool CamAva_Cv::isOpened() const {return _impl->isOpened();}
     /**
      *Closes video file or capturing device.
      */
-    void RaspiCam_Cv::release() {
+    void CamAva_Cv::release() {
         _impl->release();
     }
     
     /**
      * Grabs the next frame from video file or capturing device.
      */
-    bool RaspiCam_Cv::grab() {
+    bool CamAva_Cv::grab() {
         return _impl->grab();
     }
     
     /**
      * Push new frame to user-defined callback
      */
-    void RaspiCam_Cv::setUserCallback(void (*userCallback)(void*) , void* data) {
+    void CamAva_Cv::setUserCallback(void (*userCallback)(void*) , void* data) {
         _impl->setUserCallback(userCallback, data);
     }
     
     /**
      *Decodes and returns the grabbed video frame.
      */
-    void RaspiCam_Cv::retrieve ( cv::Mat& image ) {
+    void CamAva_Cv::retrieve ( cv::Mat& image ) {
         //here we go!
         image.create ( _impl->getHeight(),_impl->getWidth(),imgFormat );
         _impl->retrieve ( image.ptr<uchar> ( 0 ));
@@ -92,7 +92,7 @@ namespace raspicam {
     /**Returns the specified VideoCapture property
      */
     
-    double RaspiCam_Cv::get ( int propId ) {
+    double CamAva_Cv::get ( int propId ) {
         
         switch ( propId ) {
             case CV_CAP_PROP_MODE:
@@ -122,14 +122,14 @@ namespace raspicam {
             case CV_CAP_PROP_CONVERT_RGB :
                 return ( imgFormat==CV_8UC3 );
             case CV_CAP_PROP_WHITE_BALANCE_RED_V:
-                if( _impl->getAWB()== raspicam::RASPICAM_AWB_AUTO)
+                if( _impl->getAWB()== camava::CAMAVA_AWB_AUTO)
                     return -1;//auto
                 else
                     return _impl->getAWBG_red() / 100.0f;
                 break;
                 
             case CV_CAP_PROP_WHITE_BALANCE_BLUE_U:
-                if( _impl->getAWB()== raspicam::RASPICAM_AWB_AUTO)
+                if( _impl->getAWB()== camava::CAMAVA_AWB_AUTO)
                     return -1;//auto
                 else
                     return _impl->getAWBG_blue() / 100.0f;
@@ -143,7 +143,7 @@ namespace raspicam {
     /**Sets a property in the VideoCapture.
      */
     
-    bool RaspiCam_Cv::set ( int propId, double value ) {
+    bool CamAva_Cv::set ( int propId, double value ) {
         
         switch ( propId ) {
             case CV_CAP_PROP_MODE:
@@ -159,11 +159,11 @@ namespace raspicam {
             case CV_CAP_PROP_FORMAT :{
                 bool res=true;
                 if ( value==CV_8UC1  ){
-                    _impl->setFormat(RASPICAM_FORMAT_GRAY);
+                    _impl->setFormat(CAMAVA_FORMAT_GRAY);
                     imgFormat=value;
                 }
                 else if (value==CV_8UC3){
-                    _impl->setFormat(RASPICAM_FORMAT_RGB);
+                    _impl->setFormat(CAMAVA_FORMAT_RGB);
                     imgFormat=value;
                 }
                 else res=false;//error int format
@@ -186,7 +186,7 @@ namespace raspicam {
                 if ( value>0 && value<=100 ) { 
                     _impl->setShutterSpeed ( Scaler::scale ( 0,100,0,330000, value ) );
                 } else {
-                    _impl->setExposure ( RASPICAM_EXPOSURE_AUTO );
+                    _impl->setExposure ( CAMAVA_EXPOSURE_AUTO );
                     _impl->setShutterSpeed ( 0 );
                 }
                 break;
@@ -196,22 +196,22 @@ namespace raspicam {
             case CV_CAP_PROP_WHITE_BALANCE_RED_V:
                 if ( value>0 && value<=100 ) {
                     float valblue=_impl->getAWBG_blue();
-                    _impl->setAWB(raspicam::RASPICAM_AWB_OFF);
+                    _impl->setAWB(camava::CAMAVA_AWB_OFF);
                     _impl->setAWB_RB(value*100, valblue );
                 }
                 else  {
-                    _impl->setAWB(raspicam::RASPICAM_AWB_AUTO);
+                    _impl->setAWB(camava::CAMAVA_AWB_AUTO);
                 };
                 break;
                 
             case CV_CAP_PROP_WHITE_BALANCE_BLUE_U:
                 if ( value>0 && value<=100 ) {
                     float valred=_impl->getAWBG_red();
-                    _impl->setAWB(raspicam::RASPICAM_AWB_OFF);
+                    _impl->setAWB(camava::CAMAVA_AWB_OFF);
                     _impl->setAWB_RB(valred, value*100 );
                 }
                 else  {
-                    _impl->setAWB(raspicam::RASPICAM_AWB_AUTO);
+                    _impl->setAWB(camava::CAMAVA_AWB_AUTO);
                 };
                 break;
 
@@ -224,7 +224,7 @@ namespace raspicam {
         return true;
         
     }
-    std::string RaspiCam_Cv::getId() const{
+    std::string CamAva_Cv::getId() const{
         return _impl->getId();
     }
     

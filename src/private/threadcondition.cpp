@@ -39,13 +39,13 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 #include "threadcondition.h"
 
-namespace raspicam {
+namespace camava {
     namespace _private
     {
 ////////////////////////////////
 //
 ////////////////////////////////
-        ThreadCondition::ThreadCondition() throw ( raspicam::Exception ) {
+        ThreadCondition::ThreadCondition() throw ( camava::Exception ) {
             ready=false;
         }
 
@@ -53,7 +53,7 @@ namespace raspicam {
 //
 //
 ////////////////////////////////
-        void ThreadCondition::Wait(std::unique_lock<std::mutex>& lck) throw ( raspicam::Exception ) {
+        void ThreadCondition::Wait(std::unique_lock<std::mutex>& lck) throw ( camava::Exception ) {
             ready=false;
              while ( !ready ) cv.wait ( lck );
         }
@@ -62,7 +62,7 @@ namespace raspicam {
 //
 //
 ////////////////////////////////
-        void ThreadCondition::BroadCast() throw ( raspicam::Exception ) {
+        void ThreadCondition::BroadCast() throw ( camava::Exception ) {
             ready = true;
             cv.notify_all();
 

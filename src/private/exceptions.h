@@ -35,12 +35,12 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/
 
-#ifndef _RaspiCam__Exceptions_h
-#define _RaspiCam__Exceptions_h
+#ifndef _CamAva__Exceptions_h
+#define _CamAva__Exceptions_h
 #include <string>
 #include <fstream> 
 #include <cstdarg>
-namespace raspicam {
+namespace camava {
 
 /**
  * Types of valid exceptions

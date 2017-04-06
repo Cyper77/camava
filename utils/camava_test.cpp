@@ -41,7 +41,7 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #include <fstream>
 #include <sstream>
 #include <sys/timeb.h>
-#include "raspicam.h"
+#include "camava.h"
 using namespace std;
 bool doTestSpeedOnly=false;
 bool useUserCallback=false;
@@ -66,37 +66,37 @@ float getParamVal ( string param,int argc,char **argv,float defvalue=-1 ) {
     else return atof ( argv[  idx+1] );
 }
 
-raspicam::RASPICAM_EXPOSURE getExposureFromString ( string str ) {
-    if ( str=="OFF" ) return raspicam::RASPICAM_EXPOSURE_OFF;
-    if ( str=="AUTO" ) return raspicam::RASPICAM_EXPOSURE_AUTO;
-    if ( str=="NIGHT" ) return raspicam::RASPICAM_EXPOSURE_NIGHT;
-    if ( str=="NIGHTPREVIEW" ) return raspicam::RASPICAM_EXPOSURE_NIGHTPREVIEW;
-    if ( str=="BACKLIGHT" ) return raspicam::RASPICAM_EXPOSURE_BACKLIGHT;
-    if ( str=="SPOTLIGHT" ) return raspicam::RASPICAM_EXPOSURE_SPOTLIGHT;
-    if ( str=="SPORTS" ) return raspicam::RASPICAM_EXPOSURE_SPORTS;
-    if ( str=="SNOW" ) return raspicam::RASPICAM_EXPOSURE_SNOW;
-    if ( str=="BEACH" ) return raspicam::RASPICAM_EXPOSURE_BEACH;
-    if ( str=="VERYLONG" ) return raspicam::RASPICAM_EXPOSURE_VERYLONG;
-    if ( str=="FIXEDFPS" ) return raspicam::RASPICAM_EXPOSURE_FIXEDFPS;
-    if ( str=="ANTISHAKE" ) return raspicam::RASPICAM_EXPOSURE_ANTISHAKE;
-    if ( str=="FIREWORKS" ) return raspicam::RASPICAM_EXPOSURE_FIREWORKS;
-    return raspicam::RASPICAM_EXPOSURE_AUTO;
+camava::CAMAVA_EXPOSURE getExposureFromString ( string str ) {
+    if ( str=="OFF" ) return camava::CAMAVA_EXPOSURE_OFF;
+    if ( str=="AUTO" ) return camava::CAMAVA_EXPOSURE_AUTO;
+    if ( str=="NIGHT" ) return camava::CAMAVA_EXPOSURE_NIGHT;
+    if ( str=="NIGHTPREVIEW" ) return camava::CAMAVA_EXPOSURE_NIGHTPREVIEW;
+    if ( str=="BACKLIGHT" ) return camava::CAMAVA_EXPOSURE_BACKLIGHT;
+    if ( str=="SPOTLIGHT" ) return camava::CAMAVA_EXPOSURE_SPOTLIGHT;
+    if ( str=="SPORTS" ) return camava::CAMAVA_EXPOSURE_SPORTS;
+    if ( str=="SNOW" ) return camava::CAMAVA_EXPOSURE_SNOW;
+    if ( str=="BEACH" ) return camava::CAMAVA_EXPOSURE_BEACH;
+    if ( str=="VERYLONG" ) return camava::CAMAVA_EXPOSURE_VERYLONG;
+    if ( str=="FIXEDFPS" ) return camava::CAMAVA_EXPOSURE_FIXEDFPS;
+    if ( str=="ANTISHAKE" ) return camava::CAMAVA_EXPOSURE_ANTISHAKE;
+    if ( str=="FIREWORKS" ) return camava::CAMAVA_EXPOSURE_FIREWORKS;
+    return camava::CAMAVA_EXPOSURE_AUTO;
 }
 
-raspicam::RASPICAM_AWB getAwbFromString ( string str ) {
-if ( str=="OFF" ) return raspicam::RASPICAM_AWB_OFF;
-if ( str=="AUTO" ) return raspicam::RASPICAM_AWB_AUTO;
-if ( str=="SUNLIGHT" ) return raspicam::RASPICAM_AWB_SUNLIGHT;
-if ( str=="CLOUDY" ) return raspicam::RASPICAM_AWB_CLOUDY;
-if ( str=="SHADE" ) return raspicam::RASPICAM_AWB_SHADE;
-if ( str=="TUNGSTEN" ) return raspicam::RASPICAM_AWB_TUNGSTEN;
-if ( str=="FLUORESCENT" ) return raspicam::RASPICAM_AWB_FLUORESCENT;
-if ( str=="INCANDESCENT" ) return raspicam::RASPICAM_AWB_INCANDESCENT;
-if ( str=="FLASH" ) return raspicam::RASPICAM_AWB_FLASH;
-if ( str=="HORIZON" ) return raspicam::RASPICAM_AWB_HORIZON;
-return raspicam::RASPICAM_AWB_AUTO;
+camava::CAMAVA_AWB getAwbFromString ( string str ) {
+if ( str=="OFF" ) return camava::CAMAVA_AWB_OFF;
+if ( str=="AUTO" ) return camava::CAMAVA_AWB_AUTO;
+if ( str=="SUNLIGHT" ) return camava::CAMAVA_AWB_SUNLIGHT;
+if ( str=="CLOUDY" ) return camava::CAMAVA_AWB_CLOUDY;
+if ( str=="SHADE" ) return camava::CAMAVA_AWB_SHADE;
+if ( str=="TUNGSTEN" ) return camava::CAMAVA_AWB_TUNGSTEN;
+if ( str=="FLUORESCENT" ) return camava::CAMAVA_AWB_FLUORESCENT;
+if ( str=="INCANDESCENT" ) return camava::CAMAVA_AWB_INCANDESCENT;
+if ( str=="FLASH" ) return camava::CAMAVA_AWB_FLASH;
+if ( str=="HORIZON" ) return camava::CAMAVA_AWB_HORIZON;
+return camava::CAMAVA_AWB_AUTO;
 }
-void processCommandLine ( int argc,char **argv,raspicam::RaspiCam &Camera ) {
+void processCommandLine ( int argc,char **argv,camava::CamAva &Camera ) {
     Camera.setWidth ( getParamVal ( "-w",argc,argv,1280 ) );
     Camera.setHeight ( getParamVal ( "-h",argc,argv,960 ) );
     Camera.setBrightness ( getParamVal ( "-br",argc,argv,50 ) );
@@ -111,9 +111,9 @@ void processCommandLine ( int argc,char **argv,raspicam::RaspiCam &Camera ) {
     Camera.setExposureCompensation ( getParamVal ( "-ec",argc,argv ,0 ) );
 
     if ( findParam ( "-gr",argc,argv ) !=-1 )
-      Camera.setFormat(raspicam::RASPICAM_FORMAT_GRAY);
+      Camera.setFormat(camava::CAMAVA_FORMAT_GRAY);
     if ( findParam ( "-yuv",argc,argv ) !=-1 ) 
-      Camera.setFormat(raspicam::RASPICAM_FORMAT_YUV420);
+      Camera.setFormat(camava::CAMAVA_FORMAT_YUV420);
     if ( findParam ( "-test_speed",argc,argv ) !=-1 )
         doTestSpeedOnly=true;
     if ( findParam ( "-usr_cb",argc,argv ) !=-1 )
@@ -169,13 +169,13 @@ public:
 
 };
 
-void saveImage ( string filepath,unsigned char *data,raspicam::RaspiCam &Camera ) {
+void saveImage ( string filepath,unsigned char *data,camava::CamAva &Camera ) {
     std::ofstream outFile ( filepath.c_str(),std::ios::binary );
-    if ( Camera.getFormat()==raspicam::RASPICAM_FORMAT_BGR ||  Camera.getFormat()==raspicam::RASPICAM_FORMAT_RGB ) {
+    if ( Camera.getFormat()==camava::CAMAVA_FORMAT_BGR ||  Camera.getFormat()==camava::CAMAVA_FORMAT_RGB ) {
         outFile<<"P6\n";
-    } else if ( Camera.getFormat()==raspicam::RASPICAM_FORMAT_GRAY ) {
+    } else if ( Camera.getFormat()==camava::CAMAVA_FORMAT_GRAY ) {
         outFile<<"P5\n";
-    } else if ( Camera.getFormat()==raspicam::RASPICAM_FORMAT_YUV420 ) { //made up format
+    } else if ( Camera.getFormat()==camava::CAMAVA_FORMAT_YUV420 ) { //made up format
         outFile<<"P7\n";
     }
     outFile<<Camera.getWidth() <<" "<<Camera.getHeight() <<" 255\n";
@@ -183,7 +183,7 @@ void saveImage ( string filepath,unsigned char *data,raspicam::RaspiCam &Camera 
 }
 
 struct CallBackData_t{
-    raspicam::RaspiCam* Camera;
+    camava::CamAva* Camera;
     unsigned char *data;
     size_t i=0;
     volatile bool isCapturing = false;
@@ -231,7 +231,7 @@ int main ( int argc,char **argv ) {
     }
 
   
-    raspicam::RaspiCam Camera;
+    camava::CamAva Camera;
     processCommandLine ( argc,argv,Camera );
     cout<<"Connecting to camera"<<endl;
     

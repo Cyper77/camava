@@ -35,27 +35,27 @@ ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
 SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 ****************************************************************/
 
-#ifndef _RaspiCam_H_
-#define _RaspiCam_H_
+#ifndef _CamAva_H_
+#define _CamAva_H_
 #include <cstdio>
 #include <string>
-#include "raspicamtypes.h"
-namespace raspicam {
+#include "camavatypes.h"
+namespace camava {
 
     namespace _private{
         class Private_Impl;
     };
     /**Base class that do all the hard work
      */
-    class RaspiCam
+    class CamAva
     {
         public:
         /**Constructor
          */
-        RaspiCam();
+        CamAva();
         /**Destructor
          */
-        ~RaspiCam();
+        ~CamAva();
         /**Opens the camera
         * @param StartCapture determines if camera must start capture or not.
               */
@@ -83,7 +83,7 @@ namespace raspicam {
             * So type param is ignored. Do not use this parameter.
             * You can use getFormat() to know the current format
           */
-        void retrieve ( unsigned char *data,RASPICAM_FORMAT type=RASPICAM_FORMAT_IGNORE );
+        void retrieve ( unsigned char *data,CAMAVA_FORMAT type=CAMAVA_FORMAT_IGNORE );
         /**Alternative to retrieve. Returns a pointer to the original image data buffer (which is in getFormat() format).
           *
           * Be careful, if you call grab(), this will be rewritten with the new data
@@ -101,7 +101,7 @@ namespace raspicam {
 
         /**Sets capture format
          */
-        void setFormat ( RASPICAM_FORMAT fmt );
+        void setFormat ( CAMAVA_FORMAT fmt );
         /**Sets camera width. Use a multiple of 320 (640, 1280)
          */
         void setWidth ( unsigned int width ) ;
@@ -136,19 +136,19 @@ namespace raspicam {
          */
         void setExposureCompensation ( int val ); //-10,10
         void setRotation ( int rotation );
-        void setExposure ( RASPICAM_EXPOSURE exposure );
+        void setExposure ( CAMAVA_EXPOSURE exposure );
         void setShutterSpeed ( unsigned int ss );
-        void setAWB ( RASPICAM_AWB awb );
+        void setAWB ( CAMAVA_AWB awb );
         // et specific values for whitebalance. Requires to set seAWB in OFF mode first
         void setAWB_RB ( float r,float b );//range is 0-1.
-        void setImageEffect ( RASPICAM_IMAGE_EFFECT imageEffect );
-        void setMetering ( RASPICAM_METERING metering );
+        void setImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect );
+        void setMetering ( CAMAVA_METERING metering );
         void setHorizontalFlip ( bool hFlip );
         void setVerticalFlip ( bool vFlip );
         void setFrameRate ( unsigned int frames_per_second );
 
         //Accessors
-        RASPICAM_FORMAT getFormat() const;
+        CAMAVA_FORMAT getFormat() const;
         unsigned int getWidth() const;
         unsigned int getHeight() const;
         unsigned int getBrightness() const;
@@ -158,12 +158,12 @@ namespace raspicam {
         int getContrast() const;
         int getSaturation() const;
         unsigned int getShutterSpeed() const;
-        RASPICAM_EXPOSURE getExposure() const ;
-        RASPICAM_AWB getAWB() const;
+        CAMAVA_EXPOSURE getExposure() const ;
+        CAMAVA_AWB getAWB() const;
         float getAWBG_red()const;
         float getAWBG_blue()const;
-        RASPICAM_IMAGE_EFFECT getImageEffect() const ;
-        RASPICAM_METERING getMetering() const;
+        CAMAVA_IMAGE_EFFECT getImageEffect() const ;
+        CAMAVA_METERING getMetering() const;
         bool isHorizontallyFlipped() const ;
         bool isVerticallyFlipped() const ;
         unsigned int getFrameRate() const;
@@ -178,7 +178,7 @@ namespace raspicam {
 
         /**Returns the size of the required buffer for the different image types in retrieve
          */
-        size_t getImageTypeSize ( RASPICAM_FORMAT type ) const;
+        size_t getImageTypeSize ( CAMAVA_FORMAT type ) const;
         private:
         _private::Private_Impl *_impl;
     };

@@ -1,9 +1,9 @@
-#RaspiCam: C++ API for using Raspberry camera (with OpenCV)
+#CamAva: C++ API for using Raspberry camera (with OpenCV)
 
 This library allows to use the Raspberry Pi Camera under BSD License. 
 
 The project is started by the AVA research group (rafael Muñoz Salinas; rmsalinas@uco.es) and is now maintained
-on this GIT repository by Cédric Verstraeten. Please note that is NOT the OFFICIAL repository of RaspiCam, these can be found [here](http://www.uco.es/investiga/grupos/ava/node/40).
+on this GIT repository by Cédric Verstraeten. Please note that is NOT the OFFICIAL repository of CamAva, these can be found [here](http://www.uco.es/investiga/grupos/ava/node/40).
 
 This repository is used in the [Kerberos.io](https://github.com/kerberos-io) project.
 
@@ -11,7 +11,7 @@ This repository is used in the [Kerberos.io](https://github.com/kerberos-io) pro
 ##Release notes 2
 
 Update 2017/04/05 : Updated to 0.1.6
-Update 2017/04/05 : Incorporated [usercallback](https://github.com/hodaig/raspicam)
+Update 2017/04/05 : Incorporated [usercallback](https://github.com/hodaig/camava)
 
 
 
@@ -24,11 +24,11 @@ Notes:
 Requires to update the firmware to use shutterspeed (sudo rpi-update)
  
 Main features
- - Provides  class RaspiCam for easy and full control of the camera
- - Provides class  RaspiCam_Still and RaspiCam_Still_Cv for controlling the camera in still mode
- - Provides class  RaspiCam_Cv for easy control of the camera with OpenCV.
- - Provides class  RaspiCam_Still and RaspiCam_Still_Cv for controlling the camera in still mode
- - Provides class RaspiCam_Still and RaspiCam_Still_Cv for using the still camera mode
+ - Provides  class CamAva for easy and full control of the camera
+ - Provides class  CamAva_Still and CamAva_Still_Cv for controlling the camera in still mode
+ - Provides class  CamAva_Cv for easy control of the camera with OpenCV.
+ - Provides class  CamAva_Still and CamAva_Still_Cv for controlling the camera in still mode
+ - Provides class CamAva_Still and CamAva_Still_Cv for using the still camera mode
  - Easy compilation/installation using cmake.
  - No need to install development file of userland. Implementation is hidden.
  - Many examples 
@@ -51,8 +51,8 @@ Note 2: the library is currently setting the camera in video mode. So, maximum r
 
 Clone the repository to your raspberry. Then, uncompress the file and compile
  
-	git clone https://github.com/cedricve/raspicam .
-	cd raspicam
+	git clone https://github.com/cedricve/camava .
+	cd camava
 	mkdir build
 	cd build
 	cmake ..
@@ -66,7 +66,7 @@ At this point you'll see something like
 	-- 
 	-- Configuring done
 	-- Generating done
-	-- Build files have been written to: /home/pi/raspicam/trunk/build
+	-- Build files have been written to: /home/pi/camava/trunk/build
  
 If OpenCV development files are installed in your system, then you see following output; otherwise this option will be 0 and the opencv module of the library will not be compiled.
 
@@ -79,24 +79,24 @@ Finally compile, install and update the ldconfig:
 	sudo make install
 	sudo ldconfig
  
-After that, you have the programs raspicam_test  and raspicam_cv_test (if opencv was enabled).
+After that, you have the programs camava_test  and camava_cv_test (if opencv was enabled).
 Run the first program to check that compilation is ok.
  
 ### Using it in your projects
  
 You can learn how to use the library by taking a look at the examples in the utils directory and  by analyzing the header files. In addition, we  provide a some simple examples on how to use the library with cmake.
- First, create a directory for our own project. Then, go in and create a file with the name simpletest_raspicam.cpp and add the following code
+ First, create a directory for our own project. Then, go in and create a file with the name simpletest_camava.cpp and add the following code
  
 	/**
 	*/
 	#include <ctime>
 	#include <fstream>
 	#include <iostream>
-	#include <raspicam/raspicam.h>
+	#include <camava/camava.h>
 	using namespace std;
 	 
 	int main ( int argc,char **argv ) {
-		raspicam::RaspiCam Camera; //Cmaera object
+		camava::CamAva Camera; //Cmaera object
 		//Open camera 
 		cout<<"Opening Camera..."<<endl;
 		if ( !Camera.open()) {cerr<<"Error opening camera"<<endl;return -1;}
@@ -106,14 +106,14 @@ You can learn how to use the library by taking a look at the examples in the uti
 		//capture
 		Camera.grab();
 		//allocate memory
-		unsigned char *data=new unsigned char[  Camera.getImageTypeSize ( raspicam::RASPICAM_FORMAT_RGB )];
+		unsigned char *data=new unsigned char[  Camera.getImageTypeSize ( camava::CAMAVA_FORMAT_RGB )];
 		//extract the image in rgb format
-		Camera.retrieve ( data,raspicam::RASPICAM_FORMAT_RGB );//get camera image
+		Camera.retrieve ( data,camava::CAMAVA_FORMAT_RGB );//get camera image
 		//save
-		std::ofstream outFile ( "raspicam_image.ppm",std::ios::binary );
+		std::ofstream outFile ( "camava_image.ppm",std::ios::binary );
 		outFile<<"P6\n"<<Camera.getWidth() <<" "<<Camera.getHeight() <<" 255\n";
-		outFile.write ( ( char* ) data, Camera.getImageTypeSize ( raspicam::RASPICAM_FORMAT_RGB ) );
-		cout<<"Image saved at raspicam_image.ppm"<<endl;
+		outFile.write ( ( char* ) data, Camera.getImageTypeSize ( camava::CAMAVA_FORMAT_RGB ) );
+		cout<<"Image saved at camava_image.ppm"<<endl;
 		//free resrources    
 		delete data;
 		return 0;
@@ -122,10 +122,10 @@ You can learn how to use the library by taking a look at the examples in the uti
 For cmake users,  create a file named CMakeLists.txt and add:
 
 	cmake_minimum_required (VERSION 2.8) 
-	project (raspicam_test)
-	find_package(raspicam REQUIRED)
-	add_executable (simpletest_raspicam simpletest_raspicam.cpp)  
-	target_link_libraries (simpletest_raspicam ${raspicam_LIBS})
+	project (camava_test)
+	find_package(camava REQUIRED)
+	add_executable (simpletest_camava simpletest_camava.cpp)  
+	target_link_libraries (simpletest_camava ${camava_LIBS})
 
  
 Finally, create build dir,compile and execute
@@ -134,27 +134,27 @@ Finally, create build dir,compile and execute
 	cd build
 	cmake ..
 	make
-	./simpletest_raspicam
+	./simpletest_camava
  
 If you do not like cmake, simply
 
-	g++ simpletest_raspicam.cpp -o simpletest_raspicam -I/usr/local/include -lraspicam -lmmal -lmmal_core -lmmal_util
+	g++ simpletest_camava.cpp -o simpletest_camava -I/usr/local/include -lcamava -lmmal -lmmal_core -lmmal_util
  
 ### OpenCV Interface
  
-If the OpenCV is found when compiling the library, the libraspicam_cv.so module is created and the RaspiCam_Cv class available. Take a look at the examples in utils to see how to use the class. In addition, we show here how you can use the RaspiCam_Cv in your own project using cmake.
+If the OpenCV is found when compiling the library, the libcamava_cv.so module is created and the CamAva_Cv class available. Take a look at the examples in utils to see how to use the class. In addition, we show here how you can use the CamAva_Cv in your own project using cmake.
  
-First create a file with the name simpletest_raspicam_cv.cpp and add the following code
+First create a file with the name simpletest_camava_cv.cpp and add the following code
  
 	#include <ctime>
 	#include <iostream>
-	#include <raspicam/raspicam_cv.h>
+	#include <camava/camava_cv.h>
 	using namespace std; 
 	 
 	int main ( int argc,char **argv ) {
 	   
 		time_t timer_begin,timer_end;
-		raspicam::RaspiCam_Cv Camera;
+		camava::CamAva_Cv Camera;
 		cv::Mat image;
 		int nCount=100;
 		//set camera params
@@ -177,20 +177,20 @@ First create a file with the name simpletest_raspicam_cv.cpp and add the followi
 		double secondsElapsed = difftime ( timer_end,timer_begin );
 		cout<< secondsElapsed<<" seconds for "<< nCount<<"  frames : FPS = "<<  ( float ) ( ( float ) ( nCount ) /secondsElapsed ) <<endl;
 		//save image 
-		cv::imwrite("raspicam_cv_image.jpg",image);
-		cout<<"Image saved at raspicam_cv_image.jpg"<<endl;
+		cv::imwrite("camava_cv_image.jpg",image);
+		cout<<"Image saved at camava_cv_image.jpg"<<endl;
 	}
  
 For cmake users, create a file named CMakeLists.txt and add:
 
 	cmake_minimum_required (VERSION 2.8) 
-	project (raspicam_test)
-	find_package(raspicam REQUIRED)
+	project (camava_test)
+	find_package(camava REQUIRED)
 	find_package(OpenCV)
-	IF  ( OpenCV_FOUND AND raspicam_CV_FOUND)
+	IF  ( OpenCV_FOUND AND camava_CV_FOUND)
 	MESSAGE(STATUS "COMPILING OPENCV TESTS")
-	add_executable (simpletest_raspicam_cv simpletest_raspicam_cv.cpp)  
-	target_link_libraries (simpletest_raspicam_cv ${raspicam_CV_LIBS})
+	add_executable (simpletest_camava_cv simpletest_camava_cv.cpp)  
+	target_link_libraries (simpletest_camava_cv ${camava_CV_LIBS})
 	ELSE()
 	MESSAGE(FATAL_ERROR "OPENCV NOT FOUND IN YOUR SYSTEM")
 	ENDIF()
@@ -201,10 +201,10 @@ Finally, create,compile and execute
 	cd build
 	cmake ..
 	make
-	./simpletest_raspicam_cv
+	./simpletest_camava_cv
 	 
  
 If you do not like cmake:
 
-	g++ simpletest_raspicam_cv.cpp -o  simpletest_raspicam_cv -I/usr/local/include/ -lraspicam -lraspicam_cv -lmmal -lmmal_core -lmmal_util -lopencv_core -lopencv_highgui 
+	g++ simpletest_camava_cv.cpp -o  simpletest_camava_cv -I/usr/local/include/ -lcamava -lcamava_cv -lmmal -lmmal_core -lmmal_util -lopencv_core -lopencv_highgui 
 	

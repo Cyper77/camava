@@ -37,15 +37,15 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
 
-#ifndef _RASPICAM_THREADTHREADCONDITION_H
-#define _RASPICAM_THREADTHREADCONDITION_H
+#ifndef _CAMAVA_THREADTHREADCONDITION_H
+#define _CAMAVA_THREADTHREADCONDITION_H
 #include <string>
 #include <thread>             // std::thread
 #include <mutex>              // std::mutex, std::unique_lock
 #include <condition_variable> // std::condition_variable
 
 #include "exceptions.h"
-namespace raspicam {
+namespace camava {
     namespace _private
     {
         /** @brief This class implements a condition to stop a thread until the
@@ -54,14 +54,14 @@ namespace raspicam {
         class ThreadCondition
         {
             public:
-            ThreadCondition() throw ( raspicam::Exception );
+            ThreadCondition() throw ( camava::Exception );
 
             /**The thread that call this function waits untils the condition is activated */
-            void Wait(std::unique_lock<std::mutex>& lck) throw ( raspicam::Exception );
+            void Wait(std::unique_lock<std::mutex>& lck) throw ( camava::Exception );
 
  
             /**Wake up all threads waiting for this condition */
-            void BroadCast() throw ( raspicam::Exception );
+            void BroadCast() throw ( camava::Exception );
 
             private:
             std::mutex mtx;
