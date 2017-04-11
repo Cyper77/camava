@@ -88,6 +88,15 @@ void processCommandLine ( int argc,char **argv,camava::CamAva_Cv &Camera ) {
 //         Camera.setVideoStabilization ( true );
 //     Camera.setExposureCompensation ( getParamVal ( "-ev",argc,argv ,0 ) );
 
+    
+    cout << "Camera: " << Camera.getFlash() << endl;
+    Camera.setFlash(camava::CAMAVA_FLASH_OFF);
+    cout << "Camera: " << Camera.getFlash() << endl;
+    Camera.setFlash(camava::CAMAVA_FLASH_TORCH);
+    cout << "Camera: " << Camera.getFlash() << endl;
+    //Camera.setFlash(camava::CAMAVA_FLASH_ON);
+    //cout << "Camera: " << Camera.getFlash() << endl;
+
 
 }
 
@@ -138,12 +147,14 @@ int main ( int argc,char **argv ) {
         Camera.grab();
         Camera.retrieve ( image );
         if ( !doTestSpeedOnly ) {
-            if ( i%5==0 ) 	  cout<<"\r capturing ..."<<i<<"/"<<nCount<<std::flush;
-            if ( i%10==0 && i!=0 ) {
+            //if ( i%5==0 ) 	  cout<<"\r capturing ..."<<i<<"/"<<nCount<<std::flush;
+           // if ( i%10==0 && i!=0 ) {
 //                cv::imwrite ("image"+std::to_string(i)+".jpg",image );
+//            cout << "Camera: " << Camera.getFlash() << endl;
+
                 cv::imshow ("cvwindow", image);
                 cv::waitKey(1);
-            }
+           // }
         }
     }
     if ( !doTestSpeedOnly )  cout<<endl<<"Images saved in imagexx.jpg"<<endl;

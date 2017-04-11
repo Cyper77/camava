@@ -154,6 +154,7 @@ namespace camava {
             void setVideoStabilization ( bool v );
             void setExposureCompensation ( int val ); //-10,10
             void setAWB ( CAMAVA_AWB awb );
+            void setFlash ( CAMAVA_FLASH flash );
             void setAWB_RB ( float red,float blue );//ranges [0,1]
 
             void setImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect );
@@ -217,6 +218,10 @@ namespace camava {
             {
                 return State.rpc_awbMode;
             }
+            CAMAVA_FLASH getFlash() const
+            {
+                return State.flashMode;
+            }
 
             float getAWBG_red(){return State.awbg_red;}
 
@@ -271,6 +276,7 @@ namespace camava {
             void commitSaturation();
             void commitExposure();
             void commitAWB();
+            void commitFlash();
             void commitImageEffect();
             void commitMetering();
             void commitFlips();
@@ -281,6 +287,7 @@ namespace camava {
 
             MMAL_PARAM_EXPOSUREMODE_T convertExposure ( CAMAVA_EXPOSURE exposure ) ;
             MMAL_PARAM_AWBMODE_T  convertAWB ( CAMAVA_AWB awb ) ;
+            MMAL_PARAM_FLASH_T  convertFlash ( CAMAVA_FLASH flash ) ;
             MMAL_PARAM_IMAGEFX_T convertImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect ) ;
             MMAL_PARAM_EXPOSUREMETERINGMODE_T convertMetering ( CAMAVA_METERING metering ) ;
             int convertFormat ( CAMAVA_FORMAT fmt ) ;

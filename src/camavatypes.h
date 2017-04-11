@@ -82,6 +82,18 @@ namespace camava {
         CAMAVA_AWB_FLASH,
         CAMAVA_AWB_HORIZON
     }  ;
+    
+    /**Flash modes types
+     */
+    enum CAMAVA_FLASH {
+        CAMAVA_FLASH_OFF,
+        CAMAVA_FLASH_AUTO,
+        CAMAVA_FLASH_ON,
+        CAMAVA_FLASH_REDEYE,
+        CAMAVA_FLASH_FILLIN,
+        CAMAVA_FLASH_TORCH,
+        CAMAVA_FLASH_MAX,
+    }  ;
 
     /**Image effects
      */

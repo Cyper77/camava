@@ -139,6 +139,7 @@ namespace camava {
         void setExposure ( CAMAVA_EXPOSURE exposure );
         void setShutterSpeed ( unsigned int ss );
         void setAWB ( CAMAVA_AWB awb );
+        void setFlash ( CAMAVA_FLASH flash );
         // et specific values for whitebalance. Requires to set seAWB in OFF mode first
         void setAWB_RB ( float r,float b );//range is 0-1.
         void setImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect );
@@ -160,6 +161,7 @@ namespace camava {
         unsigned int getShutterSpeed() const;
         CAMAVA_EXPOSURE getExposure() const ;
         CAMAVA_AWB getAWB() const;
+        CAMAVA_FLASH getFlash() const;
         float getAWBG_red()const;
         float getAWBG_blue()const;
         CAMAVA_IMAGE_EFFECT getImageEffect() const ;

@@ -140,6 +140,8 @@ namespace camava {
         };
     }
     
+    CAMAVA_FLASH CamAva_Cv::getFlash() {return _impl->getFlash() ;}
+
     /**Sets a property in the VideoCapture.
      */
     
@@ -224,6 +226,12 @@ namespace camava {
         return true;
         
     }
+    bool CamAva_Cv::setFlash ( CAMAVA_FLASH flash ) {
+        _impl->setFlash( flash );
+        return true;
+    }
+    
+    
     std::string CamAva_Cv::getId() const{
         return _impl->getId();
     }

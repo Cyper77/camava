@@ -122,6 +122,9 @@ namespace camava {
     void CamAva::setAWB ( CAMAVA_AWB awb ) {
         _impl->setAWB ( awb );
     }
+    void CamAva::setFlash ( CAMAVA_FLASH flash ) {
+        _impl->setFlash( flash );
+    }
     void CamAva::setAWB_RB ( float r,float b ){
         _impl->setAWB_RB(r,b);
     }
@@ -157,6 +160,7 @@ namespace camava {
     int CamAva::getSaturation() const{return _impl->getSaturation() ;}
     CAMAVA_EXPOSURE CamAva::getExposure() const {return _impl->getExposure() ;}
     CAMAVA_AWB CamAva::getAWB() const{return _impl->getAWB() ;}
+    CAMAVA_FLASH CamAva::getFlash() const{return _impl->getFlash() ;}
     float CamAva::getAWBG_red()const{return _impl->getAWBG_red();}
     float CamAva::getAWBG_blue()const{return _impl->getAWBG_blue();}
 

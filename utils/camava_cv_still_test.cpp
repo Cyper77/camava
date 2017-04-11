@@ -69,11 +69,16 @@ int main ( int argc, char *argv[] ) {
     Camera.open();
     cv::Mat image;
     cout<<"capturing"<<endl;
-    if ( !Camera.grab ( ) ) {
-        cerr<<"Error in grab"<<endl;
-        return -1;
+    
+    for (int i=0; i<10; i++) {
+
+        if ( !Camera.grab ( ) ) {
+            cerr<<"Error in grab"<<endl;
+            return -1;
+        }
+        Camera.retrieve ( image );
     }
-    Camera.retrieve ( image );
+        
     cout<<"saving picture.jpg"<<endl;
 
     cv::imwrite ( "picture.jpg",image );

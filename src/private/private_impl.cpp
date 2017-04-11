@@ -82,6 +82,7 @@ namespace camava {
             State.rpc_exposureMode = CAMAVA_EXPOSURE_AUTO;
             State.rpc_exposureMeterMode = CAMAVA_METERING_AVERAGE;
             State.rpc_awbMode = CAMAVA_AWB_AUTO;
+            State.flashMode = CAMAVA_FLASH_ON;
             State.rpc_imageEffect = CAMAVA_IMAGE_EFFECT_NONE;
             State.colourEffects.enable = 0;
             State.colourEffects.u = 128;
@@ -399,8 +400,6 @@ namespace camava {
                 cout << __func__ << ": Failed to set shutter parameter.\n";
         }
 
-
-
         void Private_Impl::commitContrast() {
             if ( mmal_port_parameter_set_rational ( State.camera_component->control, MMAL_PARAMETER_CONTRAST, ( MMAL_RATIONAL_T ) {
             State.contrast, 100
@@ -438,6 +437,12 @@ namespace camava {
                 cout << __func__ << ": Failed to set AWB parameter.\n";
         }
 
+        void Private_Impl::commitFlash() {
+            MMAL_PARAMETER_FLASH_T param = {{MMAL_PARAMETER_FLASH, sizeof ( param ) }, convertFlash ( State.flashMode ) };
+            if ( mmal_port_parameter_set ( State.camera_component->control, &param.hdr ) != MMAL_SUCCESS )
+                cout << __func__ << ": Failed to set Flash parameter.\n";
+        }
+        
         void Private_Impl::commitImageEffect() {
             MMAL_PARAMETER_IMAGEFX_T imgFX = {{MMAL_PARAMETER_IMAGE_EFFECT,sizeof ( imgFX ) }, convertImageEffect ( State.rpc_imageEffect ) };
             if ( mmal_port_parameter_set ( State.camera_component->control, &imgFX.hdr ) != MMAL_SUCCESS )
@@ -463,7 +468,6 @@ namespace camava {
                     mmal_port_parameter_set ( State.camera_component->output[2], &mirror.hdr ) )
                 cout << __func__ << ": Failed to set horizontal/vertical flip parameter.\n";
         }
-
 
         /**
          * Set the specified camera to all the specified settings
@@ -674,6 +678,11 @@ namespace camava {
             if ( isOpened() ) commitAWB();
         }
 
+        void Private_Impl::setFlash ( CAMAVA_FLASH flash ) {
+            State.flashMode = flash;
+            if ( isOpened() ) commitFlash();
+        }
+        
         void Private_Impl::setImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect ) {
             State.rpc_imageEffect = imageEffect;
             if ( isOpened() ) commitImageEffect();
@@ -779,6 +788,28 @@ namespace camava {
             }
         }
 
+        MMAL_PARAM_FLASH_T Private_Impl::convertFlash ( CAMAVA_FLASH flash ) {
+            switch ( flash ) {
+                case CAMAVA_FLASH_OFF:
+                    return MMAL_PARAM_FLASH_OFF;
+                case CAMAVA_FLASH_AUTO:
+                    return MMAL_PARAM_FLASH_AUTO;
+                case CAMAVA_FLASH_ON:
+                    return MMAL_PARAM_FLASH_ON;
+                case CAMAVA_FLASH_REDEYE:
+                    return MMAL_PARAM_FLASH_REDEYE;
+                case CAMAVA_FLASH_FILLIN:
+                    return MMAL_PARAM_FLASH_FILLIN;
+                case CAMAVA_FLASH_TORCH:
+                    return MMAL_PARAM_FLASH_TORCH;
+                case CAMAVA_FLASH_MAX:
+                    return MMAL_PARAM_FLASH_MAX;
+                default:
+                    return MMAL_PARAM_FLASH_ON;
+            }
+        }
+        
+        
         MMAL_PARAM_IMAGEFX_T Private_Impl::convertImageEffect ( CAMAVA_IMAGE_EFFECT imageEffect ) {
             switch ( imageEffect ) {
             case CAMAVA_IMAGE_EFFECT_NONE:

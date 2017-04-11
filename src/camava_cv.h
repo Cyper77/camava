@@ -39,6 +39,8 @@ SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 #define CamAva_CV_H
 #include <opencv2/core/core.hpp>
 #include <opencv2/highgui/highgui.hpp>
+#include "camavatypes.h"
+
 namespace camava {
 
     namespace _private{
@@ -87,6 +89,7 @@ namespace camava {
          */
 
         double get ( int propId );
+        CAMAVA_FLASH getFlash();
 
         /**Sets a property in the VideoCapture. 
 	 * 
@@ -106,7 +109,9 @@ namespace camava {
          */
 
         bool set ( int propId, double value );
+        bool setFlash ( CAMAVA_FLASH flash );
 
+        
         /** Returns the camera identifier. We assume the camera id is the one of the raspberry obtained using raspberry serial number obtained in /proc/cpuinfo
          */
         std::string getId()const;

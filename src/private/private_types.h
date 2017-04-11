@@ -73,10 +73,11 @@ namespace camava {
             bool videoStabilisation;    /// 0 or 1 (false or true)
             int exposureCompensation;  /// -10 to +10 ?
             int shutterSpeed;
-	    CAMAVA_FORMAT captureFtm;
+            CAMAVA_FORMAT captureFtm;
             CAMAVA_EXPOSURE rpc_exposureMode;
             CAMAVA_METERING rpc_exposureMeterMode;
             CAMAVA_AWB rpc_awbMode;
+            CAMAVA_FLASH flashMode;
             CAMAVA_IMAGE_EFFECT rpc_imageEffect;
             MMAL_PARAMETER_IMAGEFX_PARAMETERS_T imageEffectsParameters;
             MMAL_PARAM_COLOURFX_T colourEffects;
